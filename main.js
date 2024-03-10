@@ -1,9 +1,17 @@
-for(let i = 1; i<=99; i++){
-    if(i % 15 === 0){
+let fizzNumber = 3;
+let buzzNumber = 5;
+
+for(let i = 1; i<=100; i++){
+    if((i % fizzNumber === 0) && (i % buzzNumber === 0))
+    {
         console.log(`FizzBuzz ${i}`);
-    }else if(i % 3 === 0){
+    }
+    else if(i % fizzNumber === 0)
+    {
         console.log(`Fizz ${i}`);
-    }else if(i % 5 === 0){
+    }
+    else if(i % buzzNumber === 0)
+    {
         console.log(`Buzz ${i}`);
     }
 }
