@@ -1,5 +1,5 @@
-let fizzNumber = 3;
-let buzzNumber = 5;
+const fizzNumber = 3;
+const buzzNumber = 5;
 
 for(let i = 1; i<=100; i++){
     if((i % fizzNumber === 0) && (i % buzzNumber === 0))
