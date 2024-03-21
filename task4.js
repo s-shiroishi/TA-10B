@@ -1,35 +1,35 @@
-function viewTask(taskList) {
+const viewTask = (taskList) => {
     const text = `${'='.repeat(20)}\n現在持っているタスク一覧\n${'='.repeat(20)}`;
 
     console.log(text);
 
-    for (let i = 0; i < taskList.length; i++) {
-        console.log(`${i} : [内容]${taskList[i]['content']}、[ジャンル]${taskList[i]['genre']}`);
-    }
+    taskList.forEach((task, idx) => {
+        console.log(`${idx} : [内容]${task['content']}、[ジャンル]${task['genre']}`);
+    })
 }
 
-function taskFactory(taskList) {
+const taskFactory = (taskList) => {
 
     return {
         taskList,
-        addTask: function (taskObj) {
-            this.taskList.push(taskObj);
-            viewTask(this.taskList);
+        addTask: (taskObj) => {
+            taskList.push(taskObj);
+            viewTask(taskList);
         }
     };
 }
-const taskList = [
+const tasks = [
     { 'content': '机を片付ける', 'genre': '掃除' },
     { 'content': '牛乳を買う', 'genre': '買い物' },
     { 'content': '散歩する', 'genre': '運動' }
 ]
-const tasks = taskFactory(taskList);
+const taskController = taskFactory(tasks);
 
-viewTask(tasks.taskList);
+viewTask(taskController.taskList);
 
 let userInputContent = prompt('タスクを入力してください');
 let userInputGenre = prompt('ジャンルを入力してください');
 
-tasks.addTask({ 'content': userInputContent, 'genre': userInputGenre });
+taskController.addTask({ 'content': userInputContent, 'genre': userInputGenre });
 
 userInput = prompt('[確認、追加、削除、終了]の4つのつのいずれかを入力してください');
