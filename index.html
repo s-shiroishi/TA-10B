@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson2</title>
+</head>
+
+<body>
+    <h1>FizzBuzz問題</h1>
+    <div>
+        FizzNum: <input type="text" id="fizz" placeholder="整数値を入力してください" size="25">
+    </div>
+    <div>
+        BuzzNum: <input type="text" id="buzz" placeholder="整数値を入力してください" size="25">
+    </div>
+    <div>
+        <button>実行</button>
+    </div>
+    <p>【出力】</p>
+
+    <script>
+        const btn = document.querySelector('button');
+        const fizz = document.querySelector('#fizz');
+        const buzz = document.querySelector('#buzz');
+
+        const validateInteger = (value, message) => {
+
+            let flag = false;
+            const numericValue = Number(value);
+
+            if (!(numericValue) || !(Number.isInteger(numericValue))) {
+                const pElement = document.createElement('p');
+                addText(pElement, `${message}`);
+                flag = true;
+            }
+            if (flag) {
+                throw new Error();
+            }
+
+        }
+
+        const addText = (element, text) => {
+            element.textContent = text;
+            document.body.append(element);
+
+        };
+
+        btn.onclick = () => {
+
+            validateInteger(fizz.value, 'Fizzに整数を入力してください');
+            validateInteger(buzz.value, 'Buzzに整数を入力してください');
+
+            for (let i = 1; i < 100; i++) {
+
+                const pElement = document.createElement('p');
+
+                if ((i % fizz.value === 0) && (i % buzz.value === 0)) {
+                    addText(pElement, `FizzBuzz: ${i}`)
+                }
+                else if ((i % fizz.value === 0)) {
+                    addText(pElement, `Fizz: ${i}`)
+                }
+                else if ((i % buzz.value === 0)) {
+                    addText(pElement, `Buzz: ${i}`)
+                }
+
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
