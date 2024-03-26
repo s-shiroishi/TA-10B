@@ -18,36 +18,37 @@
     <div>
         <button>実行</button>
     </div>
-    <p>【出力】</p>
+    <div id="output">【出力】</div>
 
     <script>
         const btn = document.querySelector('button');
         const fizz = document.querySelector('#fizz');
         const buzz = document.querySelector('#buzz');
+        const output = document.querySelector('#output')
 
         const validateInteger = (value, message) => {
 
-            let flag = false;
             const numericValue = Number(value);
 
             if (!(numericValue) || !(Number.isInteger(numericValue))) {
                 const pElement = document.createElement('p');
-                addText(pElement, `${message}`);
-                flag = true;
-            }
-            if (flag) {
+                addContent(pElement, `${message}`);
                 throw new Error();
             }
 
         }
 
-        const addText = (element, text) => {
+        const addContent = (element, text) => {
             element.textContent = text;
-            document.body.append(element);
+            output.append(element);
 
         };
 
         btn.onclick = (event) => {
+
+            while (output.lastChild) {
+                output.removeChild(output.lastChild);
+            }
 
             validateInteger(fizz.value, 'Fizzに整数を入力してください');
             validateInteger(buzz.value, 'Buzzに整数を入力してください');
@@ -57,13 +58,13 @@
                 const pElement = document.createElement('p');
 
                 if ((i % fizz.value === 0) && (i % buzz.value === 0)) {
-                    addText(pElement, `FizzBuzz: ${i}`)
+                    addContent(pElement, `FizzBuzz: ${i}`)
                 }
                 else if ((i % fizz.value === 0)) {
-                    addText(pElement, `Fizz: ${i}`)
+                    addContent(pElement, `Fizz: ${i}`)
                 }
                 else if ((i % buzz.value === 0)) {
-                    addText(pElement, `Buzz: ${i}`)
+                    addContent(pElement, `Buzz: ${i}`)
                 }
 
             }
