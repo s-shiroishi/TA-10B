@@ -23,9 +23,7 @@ const addContent = (element, text) => {
 
 btn.onclick = (event) => {
 
-    while (output.lastChild) {
-        output.removeChild(output.lastChild);
-    }
+    output.innerHTML = '';
 
     validateInteger(fizz.value, 'Fizzに整数を入力してください');
     validateInteger(buzz.value, 'Buzzに整数を入力してください');
