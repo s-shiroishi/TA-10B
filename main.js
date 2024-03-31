@@ -24,37 +24,44 @@ class TaskMapController {
     }
 }
 
-viewTask = (taskMap) => {
+class AddTableText {
+    addContent(value, element) {
+        const td = document.createElement('td');
+        td.textContent = value
+        element.appendChild(td);
+    }
+}
 
-    taskMap.forEach((task, id) => {
-        const tr = document.createElement('tr');
+class AddTableButton {
+    addContent(value, element) {
+        const td = document.createElement('td');
+        const btn = document.createElement('button');
+        btn.textContent = value;
+        td.appendChild(btn);
+        element.appendChild(td);
+    }
+}
 
-        const tdId = document.createElement('td');
-        tdId.textContent = id;
+class AddRowController {
+    constructor(outputTable) {
+        this.addTableText = new AddTableText();
+        this.addTableButton = new AddTableButton();
+        this.outputTable = outputTable;
+    }
 
-        const tdComment = document.createElement('td');
-        tdComment.textContent = task.comment;
-
-        const tdCondition = document.createElement('td');
-        const conditionBtn = document.createElement('button');
-        conditionBtn.textContent = task.condition;
-        tdCondition.appendChild(conditionBtn);
-
-        const tdDelete = document.createElement('td');
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = '削除';
-        tdDelete.appendChild(deleteBtn);
-
-        for (const td of [tdId, tdComment, tdCondition, tdDelete]) {
-            tr.appendChild(td);
-        }
-
-        output.appendChild(tr);
-    });
+    addRow(taskMap) {
+        taskMap.forEach((task, id) => {
+            const tr = document.createElement('tr');
+            this.addTableText.addContent(id, tr);
+            this.addTableText.addContent(task.comment, tr);
+            this.addTableButton.addContent(task.condition, tr);
+            this.addTableButton.addContent('削除', tr);
+            this.outputTable.appendChild(tr);
+        })
+    }
 }
 
 const currentTask = new TaskMapController();
-
 const userInput = document.querySelector('#userInput')
 const addTaskBtn = document.querySelector('#addTaskBtn');
 const output = document.querySelector('#output');
@@ -64,7 +71,8 @@ const output = document.querySelector('#output');
 addTaskBtn.onclick = (event) => {
     output.innerHTML = '';
     currentTask.addTask(userInput.value);
-    viewTask(currentTask.taskMap);
+    const addcontroller = new AddRowController(output);
+    addcontroller.addRow(currentTask.taskMap);
     userInput.value = '';
 };
 
