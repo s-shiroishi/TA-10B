@@ -7,15 +7,15 @@ class IdController {
 
 class Task {
     constructor(comment, condition = '作業中') {
-        this.comment = comment,
-            this.condition = condition
+        this.comment = comment;
+        this.condition = condition;
     }
 }
 
 class TaskMapController {
     constructor() {
-        this.idController = new IdController(),
-            this.taskMap = new Map()
+        this.idController = new IdController();
+        this.taskMap = new Map();
     }
     addTask(comment) {
         const newTask = new Task(comment)
