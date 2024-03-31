@@ -1,12 +1,12 @@
-class Id{
+class Id {
     static id = 0;
     static increment = () => this.id += 1;
 }
 
-class Task{
-    constructor(comment, condition = '作業中'){
+class Task {
+    constructor(comment, condition = '作業中') {
         this.comment = comment,
-        this.condition = condition
+            this.condition = condition
     }
 }
 
@@ -16,10 +16,10 @@ addTaskMap = (id, comment) => {
 }
 
 viewTask = (taskMap) => {
-    
+
     taskMap.forEach((task, id) => {
         const tr = document.createElement('tr');
-        
+
         const tdId = document.createElement('td');
         tdId.textContent = id;
 
@@ -36,7 +36,7 @@ viewTask = (taskMap) => {
         deleteBtn.textContent = '削除';
         tdDelete.appendChild(deleteBtn);
 
-        for(const td of [tdId, tdComment, tdCondition, tdDelete]){
+        for (const td of [tdId, tdComment, tdCondition, tdDelete]) {
             tr.appendChild(td);
         }
 
