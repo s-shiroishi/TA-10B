@@ -1,6 +1,6 @@
 class Id {
     static id = 0;
-    static increment = () => this.id += 1;
+    static increment = () => this.id++;
 }
 
 class Task {
