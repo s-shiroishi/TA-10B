@@ -1,6 +1,8 @@
-class Id {
-    static id = 0;
-    static increment = () => this.id++;
+class IdController {
+    constructor(id = 0) {
+        this.id = id;
+    };
+    increment = () => this.id++;
 }
 
 class Task {
@@ -10,9 +12,16 @@ class Task {
     }
 }
 
-addTaskMap = (id, comment) => {
-    const newTask = new Task(comment)
-    taskMap.set(id, newTask);
+class TaskMapController {
+    constructor() {
+        this.idController = new IdController(),
+            this.taskMap = new Map()
+    }
+    addTask(comment) {
+        const newTask = new Task(comment)
+        this.taskMap.set(this.idController.id, newTask);
+        this.idController.increment();
+    }
 }
 
 viewTask = (taskMap) => {
@@ -44,17 +53,18 @@ viewTask = (taskMap) => {
     });
 }
 
+const currentTask = new TaskMapController();
+
 const userInput = document.querySelector('#userInput')
 const addTaskBtn = document.querySelector('#addTaskBtn');
 const output = document.querySelector('#output');
 
-const taskMap = new Map();
+
 
 addTaskBtn.onclick = (event) => {
     output.innerHTML = '';
-    addTaskMap(Id.id, userInput.value);
-    viewTask(taskMap);
-    Id.increment();
+    currentTask.addTask(userInput.value);
+    viewTask(currentTask.taskMap);
     userInput.value = '';
 };
 
