@@ -33,7 +33,7 @@ viewTask = taskMap => {
         addTableDataText(task.comment, tableRow);
         addTableDataButton(task.condition, tableRow);
         addTableDataButton('削除', tableRow);
-        output.append(tableRow);
+        output.appendChild(tableRow);
     })
 }
 
