@@ -41,8 +41,7 @@ addTaskBtn.onclick = (event) => {
     output.innerHTML = '';
 
     const newTask = new Task(userInput.value, '作業中');
-    tasks.set(id, newTask);
-    id++;
+    tasks.set(id++, newTask);
 
     viewTask(tasks)
 
