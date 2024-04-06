@@ -13,17 +13,17 @@ class Task {
 }
 
 addTableDataText = (value, element) => {
-    const td = document.createElement('td');
-    td.textContent = value;
-    element.appendChild(td);
+    const tableData = document.createElement('td');
+    tableData.textContent = value;
+    element.appendChild(tableData);
 }
 
 addTableDataButton = (value, element) => {
-    const td = document.createElement('td');
+    const tableData = document.createElement('td');
     const btn = document.createElement('button');
     btn.textContent = value;
-    td.appendChild(btn);
-    element.appendChild(td);
+    tableData.appendChild(btn);
+    element.appendChild(tableData);
 }
 
 viewTask = taskMap => {
