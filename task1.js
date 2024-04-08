@@ -12,13 +12,13 @@ class Task {
     }
 }
 
-addTableDataText = (value, element) => {
+const addTableDataText = (value, element) => {
     const tableData = document.createElement('td');
     tableData.textContent = value;
     element.appendChild(tableData);
 }
 
-addTableDataButton = (value, element) => {
+const addTableDataButton = (value, element) => {
     const tableData = document.createElement('td');
     const btn = document.createElement('button');
     btn.textContent = value;
@@ -26,7 +26,7 @@ addTableDataButton = (value, element) => {
     element.appendChild(tableData);
 }
 
-viewTask = taskMap => {
+const viewTask = taskMap => {
     taskMap.forEach((task, id) => {
         const tableRow = document.createElement('tr');
         addTableDataText(id, tableRow);
