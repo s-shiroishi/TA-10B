@@ -2,15 +2,23 @@ const userInput = document.querySelector('#userInput');
 const addTaskBtn = document.querySelector('#addTaskBtn');
 const output = document.querySelector('#output');
 
-let tasks = new Map();
-let id = 0;
+class TaskManager {
+    constructor() {
+        this.tasks = new Map();
+        this.id = 0;
+    }
 
-class Task {
-    constructor(comment, condition) {
-        this.comment = comment;
-        this.condition = condition;
+    addTask(comment, condition) {
+        this.tasks.set(this.id++, { comment: comment, condition: condition });
     }
 }
+
+const addHiddenId = (value, element) => {
+    const hiddenId = document.createElement('input')
+    hiddenId.type = 'hidden'
+    hiddenId.value = value;
+    element.appendChild(hiddenId);
+};
 
 const addTableDataText = (value, element) => {
     const tableData = document.createElement('td');
@@ -18,53 +26,44 @@ const addTableDataText = (value, element) => {
     element.appendChild(tableData);
 };
 
-const addTableDataButton = (value, element, clickHandler) => {
+const addTableDataButton = (value, element, clickHandler, ...args) => {
     const tableData = document.createElement('td');
     const btn = document.createElement('button');
     btn.textContent = value;
+    btn.onclick = event => clickHandler(event, ...args);
     tableData.appendChild(btn);
     element.appendChild(tableData);
-    if (clickHandler) btn.onclick = clickHandler;
 };
 
-const clickDelete = event => {
-    const tableRow = event.target.closest('tr');
-    const taskId = Number(tableRow.firstChild.innerHTML);
-    tasks.delete(taskId);
-    resetId(tasks);
-    output.innerHTML = '';
-    viewTask(tasks);
-}
-
-const resetId = taskMap => {
-    id = 0;
-    let tmpTasks = new Map();
-
-    taskMap.forEach((task) => {
-        tmpTasks.set(id++, task);
-    })
-
-    tasks = tmpTasks;
-};
-
-const viewTask = taskMap => {
+const viewTask = (taskMap) => {
+    let rowId = 0;
     taskMap.forEach((task, id) => {
         const tableRow = document.createElement('tr');
-        addTableDataText(id, tableRow);
+        addTableDataText(rowId++, tableRow);
         addTableDataText(task.comment, tableRow);
         addTableDataButton(task.condition, tableRow);
-        addTableDataButton('削除', tableRow, clickDelete);
+        addTableDataButton('削除', tableRow, clickDelete, taskMap);
+        addHiddenId(id, tableRow);
         output.appendChild(tableRow);
     });
 };
 
-addTaskBtn.onclick = event => {
+const clickDelete = (event, taskMap) => {
+    const tableRow = event.target.closest('tr');
+    const taskId = Number(tableRow.lastChild.value);
+    taskMap.delete(taskId);
+    output.innerHTML = '';
+    viewTask(taskMap);
+};
+
+const taskManager = new TaskManager();
+
+addTaskBtn.onclick = () => {
     output.innerHTML = '';
 
-    const newTask = new Task(userInput.value, '作業中');
-    tasks.set(id++, newTask);
+    taskManager.addTask(userInput.value, '作業中');
 
-    viewTask(tasks);
+    viewTask(taskManager.tasks);
 
     userInput.value = '';
 };
