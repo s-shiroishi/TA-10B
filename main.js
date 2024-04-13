@@ -41,11 +41,21 @@ const viewTask = (taskMap) => {
         const tableRow = document.createElement('tr');
         addTableDataText(rowId++, tableRow);
         addTableDataText(task.comment, tableRow);
-        addTableDataButton(task.condition, tableRow);
+        addTableDataButton(task.condition, tableRow, clickCondition, taskMap);
         addTableDataButton('削除', tableRow, clickDelete, taskMap);
         addHiddenId(id, tableRow);
         output.appendChild(tableRow);
     });
+};
+
+const clickCondition = (event, taskMap) => {
+    const taskCondition = event.target.innerHTML;
+    const tableRow = event.target.closest('tr');
+    const taskId = Number(tableRow.lastChild.value);
+    const newCondition = taskCondition === '作業中' ? '完了' : '作業中';
+    taskMap.get(taskId).condition = newCondition;
+    output.innerHTML = '';
+    viewTask(taskMap);
 };
 
 const clickDelete = (event, taskMap) => {
