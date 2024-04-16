@@ -8,8 +8,8 @@ class TaskManager {
         this.id = 0;
     }
 
-    addTask(comment, condition) {
-        this.tasks.set(this.id++, { comment: comment, condition: condition });
+    addTask(comment, status) {
+        this.tasks.set(this.id++, { comment: comment, status: status });
     }
 }
 
@@ -41,11 +41,21 @@ const viewTask = (taskMap) => {
         const tableRow = document.createElement('tr');
         addTableDataText(rowId++, tableRow);
         addTableDataText(task.comment, tableRow);
-        addTableDataButton(task.condition, tableRow);
+        addTableDataButton(task.status, tableRow, clickStatus, taskMap);
         addTableDataButton('削除', tableRow, clickDelete, taskMap);
         addHiddenId(id, tableRow);
         output.appendChild(tableRow);
     });
+};
+
+const clickStatus = (event, taskMap) => {
+    const taskStatus = event.target.innerHTML;
+    const tableRow = event.target.closest('tr');
+    const taskId = Number(tableRow.lastChild.value);
+    const newStatus = taskStatus === '作業中' ? '完了' : '作業中';
+    taskMap.get(taskId).status = newStatus;
+    output.innerHTML = '';
+    viewTask(taskMap);
 };
 
 const clickDelete = (event, taskMap) => {
