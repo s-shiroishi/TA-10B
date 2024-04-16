@@ -1,6 +1,7 @@
 const userInput = document.querySelector('#userInput');
 const addTaskBtn = document.querySelector('#addTaskBtn');
 const output = document.querySelector('#output');
+const radioAll = document.querySelectorAll('input[name="radio"]');
 
 class TaskManager {
     constructor() {
@@ -36,15 +37,21 @@ const addTableDataButton = (value, element, clickHandler, ...args) => {
 };
 
 const viewTask = (taskMap) => {
+    const selectedRadioValue = document.querySelector('input[name="radio"]:checked').value;
     let rowId = 0;
     taskMap.forEach((task, id) => {
-        const tableRow = document.createElement('tr');
-        addTableDataText(rowId++, tableRow);
-        addTableDataText(task.comment, tableRow);
-        addTableDataButton(task.status, tableRow, clickStatus, taskMap);
-        addTableDataButton('削除', tableRow, clickDelete, taskMap);
-        addHiddenId(id, tableRow);
-        output.appendChild(tableRow);
+        if (selectedRadioValue == 'すべて' || task.status === selectedRadioValue) {
+            const tableRow = document.createElement('tr');
+            addTableDataText(rowId++, tableRow);
+            addTableDataText(task.comment, tableRow);
+            addTableDataButton(task.status, tableRow, clickStatus, taskMap);
+            addTableDataButton('削除', tableRow, clickDelete, taskMap);
+            addHiddenId(id, tableRow);
+            output.appendChild(tableRow);
+        } else {
+            rowId++;
+            return;
+        }
     });
 };
 
@@ -68,7 +75,14 @@ const clickDelete = (event, taskMap) => {
 
 const taskManager = new TaskManager();
 
-addTaskBtn.onclick = () => {
+document.querySelectorAll('input[name="radio"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+        output.innerHTML = '';
+        viewTask(taskManager.tasks);
+    })
+});
+
+addTaskBtn.addEventListener('click', () => {
     output.innerHTML = '';
 
     taskManager.addTask(userInput.value, '作業中');
@@ -76,4 +90,4 @@ addTaskBtn.onclick = () => {
     viewTask(taskManager.tasks);
 
     userInput.value = '';
-};
+});
