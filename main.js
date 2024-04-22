@@ -26,15 +26,9 @@ class Quiz {
     }
 }
 
-class App {
-    constructor(root) {
-        this.root = root;
-    };
+startQuiz = () => {
 
-    startQuiz() {
-        this.id = 0;
-        this.correctAnswerCount = 0;
-        this.root.innerHTML = `
+    root.innerHTML = `
     <h1>ようこそ</h1>
     <hr>
     <p>以下のボタンをクリック</p>
@@ -42,56 +36,55 @@ class App {
     <button class="start-btn">開始</button>
     `;
 
-        this.root.querySelector('.start-btn').addEventListener('click', async () => {
-            this.root.innerHTML = `
+    root.querySelector('.start-btn').addEventListener('click', async () => {
+        root.innerHTML = `
             <h1>取得中</h1>
             <hr>
             <p>少々お待ちください</p>
             <hr>
             `
-            this.quiz = new Quiz();
-            await this.quiz.fetchQuizData();
-            this.addAnswerBtnListener()
+        await quiz.fetchQuizData();
+        addAnswerBtnListener()
+    });
+
+}
+
+addAnswerBtnListener = () => {
+    root.innerHTML = quiz.createQuizHTML(id)
+    const answerButtons = root.querySelectorAll('.answer-btn');
+    answerButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (button.dataset.answer === 'true') {
+                correctAnswerCount++;
+            }
+            if (id < quiz.amount - 1) {
+                id++;
+                addAnswerBtnListener();
+            } else {
+                root.innerHTML = endQuiz();
+                document.querySelector('.home-btn').addEventListener('click', () => {
+                    startQuiz();
+                })
+                id = 0;
+                correctAnswerCount = 0;
+            }
         });
+    });
+}
 
-    }
-
-    addAnswerBtnListener() {
-        this.root.innerHTML = this.quiz.createQuizHTML(this.id)
-        const answerButtons = this.root.querySelectorAll('.answer-btn');
-        answerButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                if (button.dataset.answer === 'true') {
-                    this.correctAnswerCount++;
-                }
-                if (this.id < this.quiz.amount - 1) {
-                    this.id++;
-                    this.addAnswerBtnListener();
-                } else {
-                    this.root.innerHTML = this.endQuiz();
-                    document.querySelector('.home-btn').addEventListener('click', () => {
-                        this.startQuiz();
-                    })
-                }
-            });
-        });
-    }
-
-    endQuiz() {
-        return `
-        <h1>あなたの正答数は${this.correctAnswerCount}です!!</h1>
+endQuiz = () => {
+    return `
+        <h1>あなたの正答数は${correctAnswerCount}です!!</h1>
         <hr>
         <p>再度チャレンジしたい場合は以下をクリック</p>
         <hr>
         <button class="home-btn">ホームへ戻る</button>
         `
-    }
-
-
 }
 
-const root = document.querySelector('.root');
+const root = document.querySelector('#root');
+const quiz = new Quiz();
+let id = 0;
+let correctAnswerCount = 0;
 
-const app = new App(root);
-
-app.startQuiz();
+startQuiz(root);
