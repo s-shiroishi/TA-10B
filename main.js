@@ -1,6 +1,8 @@
 class Quiz {
     constructor(amount = 10) {
+        this.id = 0;
         this.amount = amount;
+        this.correctAnswerCount = 0;
     }
 
     async fetchQuizData(amount) {
@@ -9,13 +11,13 @@ class Quiz {
         this.data = new Map(responseJson.results.map((obj, id) => [id, obj]));
     }
 
-    createQuizHTML(id) {
-        const quiz = this.data.get(id);
+    createQuizHTML() {
+        const quiz = this.data.get(this.id);
         const answers = [...quiz.incorrect_answers, quiz.correct_answer];
         const random_answers = answers.sort(() => Math.random() - 0.5);
 
         return `
-        <h1>問題${id + 1}</h1>
+        <h1>問題${this.id + 1}</h1>
         <h3>[ジャンル] ${quiz.category}</h3>
         <h3>[難易度] ${quiz.difficulty}</h3>
         <hr>
@@ -27,6 +29,8 @@ class Quiz {
 }
 
 startQuiz = () => {
+
+    const quiz = new Quiz();
 
     root.innerHTML = `
     <h1>ようこそ</h1>
@@ -44,37 +48,35 @@ startQuiz = () => {
             <hr>
             `
         await quiz.fetchQuizData();
-        addAnswerBtnListener()
+        addAnswerBtnListener(quiz);
     });
 
 }
 
-addAnswerBtnListener = () => {
-    root.innerHTML = quiz.createQuizHTML(id)
+addAnswerBtnListener = (quiz) => {
+    root.innerHTML = quiz.createQuizHTML();
     const answerButtons = root.querySelectorAll('.answer-btn');
     answerButtons.forEach(button => {
         button.addEventListener('click', () => {
             if (button.dataset.answer === 'true') {
-                correctAnswerCount++;
+                quiz.correctAnswerCount++;
             }
-            if (id < quiz.amount - 1) {
-                id++;
-                addAnswerBtnListener();
+            if (quiz.id < quiz.amount - 1) {
+                quiz.id++;
+                addAnswerBtnListener(quiz);
             } else {
-                root.innerHTML = endQuiz();
+                root.innerHTML = endQuiz(quiz);
                 document.querySelector('.home-btn').addEventListener('click', () => {
                     startQuiz();
                 })
-                id = 0;
-                correctAnswerCount = 0;
             }
         });
     });
 }
 
-endQuiz = () => {
+endQuiz = (quiz) => {
     return `
-        <h1>あなたの正答数は${correctAnswerCount}です!!</h1>
+        <h1>あなたの正答数は${quiz.correctAnswerCount}です!!</h1>
         <hr>
         <p>再度チャレンジしたい場合は以下をクリック</p>
         <hr>
@@ -83,8 +85,5 @@ endQuiz = () => {
 }
 
 const root = document.querySelector('#root');
-const quiz = new Quiz();
-let id = 0;
-let correctAnswerCount = 0;
 
 startQuiz(root);
