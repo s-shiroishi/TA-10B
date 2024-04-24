@@ -28,7 +28,7 @@ class Quiz {
     }
 }
 
-startQuiz = () => {
+startQuiz = (root) => {
 
     const quiz = new Quiz();
 
@@ -67,7 +67,7 @@ addAnswerBtnListener = (quiz) => {
             } else {
                 root.innerHTML = endQuiz(quiz);
                 document.querySelector('.home-btn').addEventListener('click', () => {
-                    startQuiz();
+                    startQuiz(root);
                 })
             }
         });
