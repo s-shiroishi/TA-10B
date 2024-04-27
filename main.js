@@ -1,9 +1,31 @@
 class Quiz {
+    #id = 0;
+    #correctAnswerCount = 0;
+    #amount;
     constructor(amount = 10) {
-        this.id = 0;
-        this.amount = amount;
-        this.correctAnswerCount = 0;
+        this.#amount = amount;
     }
+
+    getId() {
+        return this.#id;
+    }
+
+    addId() {
+        this.#id ++;
+    }
+
+    getCorrectAnswerCount() {
+        return this.#correctAnswerCount;
+    }
+
+    addCorrectAnswerCount() {
+        this.#correctAnswerCount ++;
+    }
+
+    getAmount() {
+        return this.#amount;
+    }
+
 
     async fetchQuizData(amount) {
         const response = await fetch(`https://opentdb.com/api.php?amount=${amount}&type=multiple`)
@@ -12,12 +34,12 @@ class Quiz {
     }
 
     createQuizHTML() {
-        const quiz = this.data.get(this.id);
+        const quiz = this.data.get(this.#id);
         const answers = [...quiz.incorrect_answers, quiz.correct_answer];
         const random_answers = answers.sort(() => Math.random() - 0.5);
 
         return `
-        <h1>問題${this.id + 1}</h1>
+        <h1>問題${this.#id + 1}</h1>
         <h3>[ジャンル] ${quiz.category}</h3>
         <h3>[難易度] ${quiz.difficulty}</h3>
         <hr>
@@ -59,10 +81,10 @@ addAnswerBtnListener = (quiz) => {
     answerButtons.forEach(button => {
         button.addEventListener('click', () => {
             if (button.dataset.answer === 'true') {
-                quiz.correctAnswerCount++;
+                quiz.addCorrectAnswerCount();
             }
-            if (quiz.id < quiz.amount - 1) {
-                quiz.id++;
+            if (quiz.getId() < quiz.getAmount() - 1) {
+                quiz.addId();
                 addAnswerBtnListener(quiz);
             } else {
                 root.innerHTML = endQuiz(quiz);
@@ -76,7 +98,7 @@ addAnswerBtnListener = (quiz) => {
 
 endQuiz = (quiz) => {
     return `
-        <h1>あなたの正答数は${quiz.correctAnswerCount}です!!</h1>
+        <h1>あなたの正答数は${quiz.getCorrectAnswerCount()}です!!</h1>
         <hr>
         <p>再度チャレンジしたい場合は以下をクリック</p>
         <hr>
