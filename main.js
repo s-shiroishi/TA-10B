@@ -6,7 +6,7 @@ class Quiz {
         this.#amount = amount;
     }
 
-    getId() {
+    get id() {
         return this.#id;
     }
 
@@ -14,7 +14,7 @@ class Quiz {
         this.#id ++;
     }
 
-    getCorrectAnswerCount() {
+    get correctAnswerCount() {
         return this.#correctAnswerCount;
     }
 
@@ -22,7 +22,7 @@ class Quiz {
         this.#correctAnswerCount ++;
     }
 
-    getAmount() {
+    get amount() {
         return this.#amount;
     }
 
@@ -83,7 +83,7 @@ addAnswerBtnListener = (quiz) => {
             if (button.dataset.answer === 'true') {
                 quiz.addCorrectAnswerCount();
             }
-            if (quiz.getId() < quiz.getAmount() - 1) {
+            if (quiz.id < quiz.amount - 1) {
                 quiz.addId();
                 addAnswerBtnListener(quiz);
             } else {
@@ -98,7 +98,7 @@ addAnswerBtnListener = (quiz) => {
 
 endQuiz = (quiz) => {
     return `
-        <h1>あなたの正答数は${quiz.getCorrectAnswerCount()}です!!</h1>
+        <h1>あなたの正答数は${quiz.correctAnswerCount}です!!</h1>
         <hr>
         <p>再度チャレンジしたい場合は以下をクリック</p>
         <hr>
