@@ -28,10 +28,6 @@ function App() {
     setTaskList(taskList.filter((task) => task.id !== e.target.value));
   }
 
-  const changeConditionHandler = (e) => {
-    setFilterCondition(e.target.value);
-  }
-
   const getViewTask = () => {
     if (filterCondition === "すべて") {
       return taskList;
@@ -47,11 +43,11 @@ function App() {
       </div>
       <div>
         <div>
-          <input type="radio" id="すべて" name="condition" value="すべて" onChange={changeConditionHandler} checked={filterCondition === "すべて"}></input>
+          <input type="radio" id="すべて" name="condition" value="すべて" onChange={(e) => { setFilterCondition(e.target.value) }} checked={filterCondition === "すべて"}></input>
           <label for="すべて">すべて</label>
-          <input type="radio" id="作業中" name="condition" value="作業中" onChange={changeConditionHandler} checked={filterCondition === "作業中"}></input>
+          <input type="radio" id="作業中" name="condition" value="作業中" onChange={(e) => { setFilterCondition(e.target.value) }} checked={filterCondition === "作業中"}></input>
           <label for="作業中">作業中</label>
-          <input type="radio" id="完了" name="condition" value="完了" onChange={changeConditionHandler} checked={filterCondition === "完了"}></input>
+          <input type="radio" id="完了" name="condition" value="完了" onChange={(e) => { setFilterCondition(e.target.value) }} checked={filterCondition === "完了"}></input>
           <label for="完了">完了</label>
         </div>
         <table>
