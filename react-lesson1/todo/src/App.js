@@ -1,12 +1,14 @@
 import React, { useState, useRef } from "react";
 import { v4 as uuid } from 'uuid';
+import { Header, RadioWrapper, Radio, Table, Form } from './components';
 
 function App() {
   const inputRef = useRef('');
   const [taskList, setTaskList] = useState([]);
   const [filterCondition, setFilterCondition] = useState('すべて');
 
-  const clickAddHandler = () => {
+  const clickAddHandler = (e) => {
+    e.preventDefault();
     const newTaskList = [...taskList];
     newTaskList.push({ id: uuid(), comment: inputRef.current.value, condition: '作業中' });
     setTaskList(newTaskList);
@@ -38,41 +40,14 @@ function App() {
 
   return (
     <>
-      <div>
-        <h1>Todoアプリ</h1>
-      </div>
-      <div>
-        <div>
-          <input type="radio" id="すべて" name="condition" value="すべて" onChange={(e) => { setFilterCondition(e.target.value) }} checked={filterCondition === "すべて"}></input>
-          <label for="すべて">すべて</label>
-          <input type="radio" id="作業中" name="condition" value="作業中" onChange={(e) => { setFilterCondition(e.target.value) }} checked={filterCondition === "作業中"}></input>
-          <label for="作業中">作業中</label>
-          <input type="radio" id="完了" name="condition" value="完了" onChange={(e) => { setFilterCondition(e.target.value) }} checked={filterCondition === "完了"}></input>
-          <label for="完了">完了</label>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>コメント</th>
-              <th>状態</th>
-            </tr>
-          </thead>
-          <tbody>
-            {getViewTask().map((task, id) => (
-              <tr key={task.id}>
-                <td>{id}</td>
-                <td>{task.comment}</td>
-                <td><button value={task.id} onClick={clickConditionHandler}>{task.condition}</button></td>
-                <td><button value={task.id} onClick={clickDeleteHandler}>削除</button></td>
-              </tr>
-            )
-            )}
-          </tbody>
-        </table>
-        <input type="text" ref={inputRef}></input>
-        <button onClick={clickAddHandler}>追加</button>
-      </div>
+      <Header title="TODOアプリ" />
+      <RadioWrapper>
+        <Radio condition="すべて" filterCondition={filterCondition} setFilterCondition={setFilterCondition} />
+        <Radio condition="作業中" filterCondition={filterCondition} setFilterCondition={setFilterCondition} />
+        <Radio condition="完了" filterCondition={filterCondition} setFilterCondition={setFilterCondition} />
+      </RadioWrapper>
+      <Table getViewTask={getViewTask} clickConditionHandler={clickConditionHandler} clickDeleteHandler={clickDeleteHandler} />
+      <Form inputRef={inputRef} clickAddHandler={(e) => { clickAddHandler(e) }} />
     </>
   );
 }
