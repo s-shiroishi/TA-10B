@@ -1,4 +1,4 @@
-const ConditionRadioGroup = ({ filterCondition, setFilterCondition }) => {
+const RadioGroup = ({ filterCondition, setFilterCondition }) => {
     const conditions = ['すべて', '作業中', '完了'];
     return (
         <div>
@@ -12,4 +12,4 @@ const ConditionRadioGroup = ({ filterCondition, setFilterCondition }) => {
     );
 };
 
-export default ConditionRadioGroup;
+export default RadioGroup;
