@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { v4 as uuid } from 'uuid';
 import Title from "./components/basics/Title";
-import ConditionRadioGroup from "./components/organisms/ConditionRadioGroup";
+import RadioGroup from "./components/organisms/RadioGroup";
 import TaskTable from "./components/organisms/TaskTable";
 import AddTaskForm from "./components/organisms/AddTaskForm";
 
@@ -46,7 +46,7 @@ function App() {
   return (
     <>
       <Title title='Todoアプリ' />
-      <ConditionRadioGroup filterCondition={filterCondition} setFilterCondition={setFilterCondition} />
+      <RadioGroup filterCondition={filterCondition} setFilterCondition={setFilterCondition} />
       <TaskTable getViewTask={getViewTask} onClick={{ condition: clickConditionHandler, delete: clickDeleteHandler }} />
       <AddTaskForm inputRef={inputRef} onClick={clickAddHandler} />
     </>
