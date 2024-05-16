@@ -1,18 +1,16 @@
-import TableData from "../basics/atoms/TableData";
-import Button from "../basics/atoms/Button";
-import TableRow from "../basics/molecules/TableRow";
+import Button from "../basics/Button";
 
-const TaskRow = ({ task, id, clickConditionHandler, clickDeleteHandler }) => (
-    <TableRow key={task.id}>
-        <TableData>{id}</TableData>
-        <TableData>{task.comment}</TableData>
-        <TableData>
-            <Button value={task.id} onClick={(e) => clickConditionHandler(e)}>{task.condition}</Button>
-        </TableData>
-        <TableData>
-            <Button value={task.id} onClick={(e) => clickDeleteHandler(e)}>削除</Button>
-        </TableData>
-    </TableRow>
+const TaskRow = ({ task, id, onClick }) => (
+    <tr>
+        <td>{id}</td>
+        <td>{task.comment}</td>
+        <td>
+            <Button value={task.id} onClick={(e) => onClick.condition(e)} text={task.condition} />
+        </td>
+        <td>
+            <Button value={task.id} onClick={(e) => onClick.delete(e)} text='削除'></Button>
+        </td>
+    </tr>
 );
 
 export default TaskRow;

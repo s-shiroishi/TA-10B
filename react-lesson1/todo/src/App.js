@@ -1,17 +1,16 @@
 import React, { useState, useRef } from "react";
 import { v4 as uuid } from 'uuid';
-import Header1 from "./components/basics/atoms/Header1";
-import AppHeader from "./components/basics/molecules/AppHeader";
-import CreateConditionRadio from "./components/organisms/CreateConditionRadio";
-import CreateTodoTable from "./components/organisms/CreateTodoTable";
-import CreateTaskForm from "./components/organisms/CreateTaskForm";
+import Title from "./components/basics/Title";
+import ConditionRadioGroup from "./components/organisms/ConditionRadioGroup";
+import TaskTable from "./components/organisms/TaskTable";
+import AddTaskForm from "./components/organisms/AddTaskForm";
+
 
 
 function App() {
   const inputRef = useRef('');
   const [taskList, setTaskList] = useState([]);
   const [filterCondition, setFilterCondition] = useState('すべて');
-
 
   const clickAddHandler = (e) => {
     e.preventDefault();
@@ -46,12 +45,10 @@ function App() {
 
   return (
     <>
-      <AppHeader>
-        <Header1>TODOアプリ</Header1>
-      </AppHeader>
-      <CreateConditionRadio filterCondition={filterCondition} setFilterCondition={setFilterCondition} />
-      <CreateTodoTable getViewTask={getViewTask} clickConditionHandler={clickConditionHandler} clickDeleteHandler={clickDeleteHandler} />
-      <CreateTaskForm inputRef={inputRef} clickAddHandler={clickAddHandler} />
+      <Title title='Todoアプリ' />
+      <ConditionRadioGroup filterCondition={filterCondition} setFilterCondition={setFilterCondition} />
+      <TaskTable getViewTask={getViewTask} onClick={{ condition: clickConditionHandler, delete: clickDeleteHandler }} />
+      <AddTaskForm inputRef={inputRef} onClick={clickAddHandler} />
     </>
   );
 };
