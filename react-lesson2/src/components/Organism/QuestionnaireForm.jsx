@@ -42,10 +42,14 @@ const QuestionnaireForm = ({
 
   return (
     <Form
-      header={<StepLabel text="STEP2" />}
+      header={
+        <>
+          <StepLabel text="STEP2" />
+          <FormTitle title="以下にお答えください" />
+        </>
+      }
       body={
         <>
-          <FormTitle title="以下にお答えください" />
           <FormContent>
             {questions.slice(0, viewCount).map((question) => (
               <FormField key={question.name} label={question.label}>

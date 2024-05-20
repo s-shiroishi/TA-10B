@@ -37,10 +37,14 @@ const BasicInfoForm = ({ birthday, setBirthday, gender, setGender }) => {
 
   return (
     <Form
-      header={<StepLabel text="STEP1" />}
+      header={
+        <>
+          <StepLabel text="STEP1" />
+          <FormTitle title="お客様の情報を入力してください" />
+        </>
+      }
       body={
         <>
-          <FormTitle title="お客様の情報を入力してください" />
           <FormContent>
             <FormField label="-性別-">
               <RadioGroup

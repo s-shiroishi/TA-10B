@@ -9,10 +9,14 @@ import FormButton from "../basis/FormButton";
 const ConsultationForm = ({ consultation, setConsultation }) => {
   return (
     <Form
-      header={<StepLabel text="STEP3" />}
+      header={
+        <>
+          <StepLabel text="STEP3" />
+          <FormTitle title="ご相談内容をご記入ください" />
+        </>
+      }
       body={
         <>
-          <FormTitle title="ご相談内容をご記入ください" />
           <FormContent>
             <FormField label="-ご相談内容-">
               <textarea
