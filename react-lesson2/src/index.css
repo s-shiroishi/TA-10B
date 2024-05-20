@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+    @apply h-screen;
+    @apply text-gray-500;
+}
+
+#root {
+    @apply h-full;
+    @apply container mx-auto;
+    @apply flex items-center justify-center;
+}
+
