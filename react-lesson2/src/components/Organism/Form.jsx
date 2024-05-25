@@ -1,5 +1,4 @@
 import React from "react";
-import FormButton from "../basis/FormButton";
 
 const Form = ({ header, body, footer }) => {
   return (

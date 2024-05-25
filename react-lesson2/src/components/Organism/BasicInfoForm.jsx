@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Form from "./Form";
 import FormTitle from "../basis/FormTitle";
 import StepLabel from "../basis/StepLabel";
@@ -6,7 +7,7 @@ import FormContent from "../basis/FormContent";
 import FormField from "../basis/FormField";
 import RadioGroup from "../basis/RadioGroup";
 import SelectGroup from "../basis/SelectGroup";
-import FormButton from "../basis/FormButton";
+import Button from "../basis/Button";
 import {
   generateYearOptions,
   generateMonthOptions,
@@ -34,6 +35,12 @@ const BasicInfoForm = ({ birthday, setBirthday, gender, setGender }) => {
       value: birthday.day,
     },
   ];
+
+  const navigate = useNavigate();
+
+  const handleNavigation = (to) => {
+    navigate(to);
+  };
 
   return (
     <Form
@@ -66,7 +73,12 @@ const BasicInfoForm = ({ birthday, setBirthday, gender, setGender }) => {
           </FormContent>
         </>
       }
-      footer={<FormButton text="次に進む" to="/questionnaire" />}
+      footer={
+        <Button
+          text="次に進む"
+          onClick={() => handleNavigation("/questionnaire")}
+        />
+      }
     />
   );
 };

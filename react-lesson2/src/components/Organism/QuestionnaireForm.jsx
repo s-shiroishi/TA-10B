@@ -1,11 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
 import Form from "./Form";
 import StepLabel from "../basis/StepLabel";
 import FormTitle from "../basis/FormTitle";
 import FormContent from "../basis/FormContent";
 import FormField from "../basis/FormField";
 import RadioGroup from "../basis/RadioGroup";
-import FormButton from "../basis/FormButton";
+import Button from "../basis/Button";
 
 const QuestionnaireForm = ({
   viewCount,
@@ -16,6 +18,7 @@ const QuestionnaireForm = ({
   setQuestion2,
   question3,
   setQuestion3,
+  onClick,
 }) => {
   const questions = [
     {
@@ -39,6 +42,12 @@ const QuestionnaireForm = ({
       onChange: setQuestion3,
     },
   ];
+
+  const navigate = useNavigate();
+
+  const handleNavigation = (to) => {
+    navigate(to);
+  };
 
   return (
     <Form
@@ -69,8 +78,11 @@ const QuestionnaireForm = ({
       }
       footer={
         <>
-          <FormButton text="前に戻る" to="/" />
-          <FormButton text="次に進む" to="/consultation" />
+          <Button text="前に戻る" onClick={() => handleNavigation("/")} />
+          <Button
+            text="次に進む"
+            onClick={() => handleNavigation("/consultation")}
+          />
         </>
       }
     />

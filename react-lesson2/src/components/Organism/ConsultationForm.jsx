@@ -1,12 +1,18 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Form from "./Form";
 import StepLabel from "../basis/StepLabel";
 import FormTitle from "../basis/FormTitle";
 import FormContent from "../basis/FormContent";
 import FormField from "../basis/FormField";
-import FormButton from "../basis/FormButton";
+import Button from "../basis/Button";
 
 const ConsultationForm = ({ consultation, setConsultation }) => {
+  const navigate = useNavigate();
+
+  const handleNavigation = (to) => {
+    navigate(to);
+  };
   return (
     <Form
       header={
@@ -30,8 +36,11 @@ const ConsultationForm = ({ consultation, setConsultation }) => {
       }
       footer={
         <>
-          <FormButton text="前に戻る" to="/questionnaire" />
-          <FormButton text="次に進む" />
+          <Button
+            text="前に戻る"
+            onClick={() => handleNavigation("/questionnaire")}
+          />
+          <Button text="次に進む" />
         </>
       }
     />
