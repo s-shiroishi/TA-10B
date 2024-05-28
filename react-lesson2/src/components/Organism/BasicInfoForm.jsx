@@ -1,6 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import Form from "./Form";
+import Form from "../basis/Form";
 import FormTitle from "../basis/FormTitle";
 import StepLabel from "../basis/StepLabel";
 import FormContent from "../basis/FormContent";
@@ -14,7 +13,14 @@ import {
   generateDayOptions,
 } from "../../utils";
 
-const BasicInfoForm = ({ birthday, setBirthday, gender, setGender }) => {
+const BasicInfoForm = ({
+  routePaths,
+  handleNavigation,
+  birthday,
+  setBirthday,
+  gender,
+  setGender,
+}) => {
   const selectConditions = [
     {
       label: "年",
@@ -36,12 +42,6 @@ const BasicInfoForm = ({ birthday, setBirthday, gender, setGender }) => {
     },
   ];
 
-  const navigate = useNavigate();
-
-  const handleNavigation = (to) => {
-    navigate(to);
-  };
-
   return (
     <Form
       header={
@@ -56,7 +56,7 @@ const BasicInfoForm = ({ birthday, setBirthday, gender, setGender }) => {
             <FormField label="-性別-">
               <RadioGroup
                 value={gender}
-                onChange={setGender}
+                onChange={(e) => setGender(e.target.value)}
                 cond={{
                   name: "gender",
                   values: ["男性", "女性"],
@@ -66,7 +66,9 @@ const BasicInfoForm = ({ birthday, setBirthday, gender, setGender }) => {
             <FormField label="-生年月日-">
               <SelectGroup
                 value={birthday}
-                onChange={setBirthday}
+                onChange={(e) =>
+                  setBirthday({ ...birthday, [e.target.name]: e.target.value })
+                }
                 cond={selectConditions}
               />
             </FormField>
@@ -76,7 +78,7 @@ const BasicInfoForm = ({ birthday, setBirthday, gender, setGender }) => {
       footer={
         <Button
           text="次に進む"
-          onClick={() => handleNavigation("/questionnaire")}
+          onClick={() => handleNavigation("questionnaire")}
         />
       }
     />

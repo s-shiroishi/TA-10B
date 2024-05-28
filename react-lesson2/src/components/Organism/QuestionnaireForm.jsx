@@ -1,7 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-
-import Form from "./Form";
+import Form from "../basis/Form";
 import StepLabel from "../basis/StepLabel";
 import FormTitle from "../basis/FormTitle";
 import FormContent from "../basis/FormContent";
@@ -10,6 +8,8 @@ import RadioGroup from "../basis/RadioGroup";
 import Button from "../basis/Button";
 
 const QuestionnaireForm = ({
+  routePaths,
+  handleNavigation,
   viewCount,
   setViewCount,
   question1,
@@ -43,12 +43,6 @@ const QuestionnaireForm = ({
     },
   ];
 
-  const navigate = useNavigate();
-
-  const handleNavigation = (to) => {
-    navigate(to);
-  };
-
   return (
     <Form
       header={
@@ -64,8 +58,8 @@ const QuestionnaireForm = ({
               <FormField key={question.name} label={question.label}>
                 <RadioGroup
                   value={question.value}
-                  onChange={question.onChange}
-                  onClick={setViewCount}
+                  onChange={(e) => question.onChange(e.target.value)}
+                  onClick={(e) => setViewCount(e.target.value + 1)}
                   cond={{
                     name: question.name,
                     values: ["はい", "いいえ"],
@@ -78,10 +72,13 @@ const QuestionnaireForm = ({
       }
       footer={
         <>
-          <Button text="前に戻る" onClick={() => handleNavigation("/")} />
+          <Button
+            text="前に戻る"
+            onClick={() => handleNavigation("basicInfo")}
+          />
           <Button
             text="次に進む"
-            onClick={() => handleNavigation("/consultation")}
+            onClick={() => handleNavigation("consultation")}
           />
         </>
       }
