@@ -7,7 +7,6 @@ import FormField from "../basis/FormField";
 import Button from "../basis/Button";
 
 const ConsultationForm = ({
-  routePaths,
   handleNavigation,
   consultation,
   setConsultation,
@@ -39,7 +38,7 @@ const ConsultationForm = ({
             text="前に戻る"
             onClick={() => handleNavigation("questionnaire")}
           />
-          <Button text="次に進む" />
+          <Button text="次に進む" onClick={() => handleNavigation("confirm")} />
         </>
       }
     />
