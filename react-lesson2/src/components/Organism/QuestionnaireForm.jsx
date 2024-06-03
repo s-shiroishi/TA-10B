@@ -8,7 +8,6 @@ import RadioGroup from "../basis/RadioGroup";
 import Button from "../basis/Button";
 
 const QuestionnaireForm = ({
-  routePaths,
   handleNavigation,
   viewCount,
   setViewCount,

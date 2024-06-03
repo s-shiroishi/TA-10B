@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import BasicInfoForm from "./components/Organism/BasicInfoForm";
 import QuestionnaireForm from "./components/Organism/QuestionnaireForm";
 import ConsultationForm from "./components/Organism/ConsultationForm";
+import ConfirmForm from "./components/Organism/ConfirmForm";
 
 function App() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ function App() {
     basicInfo: "/",
     questionnaire: "/questionnaire",
     consultation: "/consultation",
+    confirm: "/confirm",
   };
 
   const handleNavigation = (pathKey) => {
@@ -44,7 +46,6 @@ function App() {
         path="/"
         element={
           <BasicInfoForm
-            routePaths={routePaths}
             handleNavigation={handleNavigation}
             birthday={birthday}
             setBirthday={setBirthday}
@@ -57,7 +58,6 @@ function App() {
         path="/questionnaire"
         element={
           <QuestionnaireForm
-            routePaths={routePaths}
             handleNavigation={handleNavigation}
             viewCount={viewCount}
             setViewCount={setViewCount}
@@ -74,10 +74,23 @@ function App() {
         path="/consultation"
         element={
           <ConsultationForm
-            routePaths={routePaths}
             handleNavigation={handleNavigation}
             consultation={consultation}
             setConsultation={setConsultation}
+          />
+        }
+      />
+      <Route
+        path="/confirm"
+        element={
+          <ConfirmForm
+            handleNavigation={handleNavigation}
+            gender={gender}
+            birthday={birthday}
+            question1={question1}
+            question2={question2}
+            question3={question3}
+            consultation={consultation}
           />
         }
       />

@@ -14,7 +14,6 @@ import {
 } from "../../utils";
 
 const BasicInfoForm = ({
-  routePaths,
   handleNavigation,
   birthday,
   setBirthday,
