@@ -1,15 +1,16 @@
 import {Routes, Route, useNavigate } from 'react-router-dom';
-import Register from './components/pages/Register';
+import Auth from './components/pages/Auth';
 import Dashboard from './components/pages/Dashboard';
 import {RoutePathsType} from './types/RoutePaths';
+import { useState } from 'react';
 
 function App() {
-
+  const [isLogin, setIsLogin] = useState<boolean>(true);
   const navigate = useNavigate();
 
   const routePaths: RoutePathsType = {
-    'dashboard': '/',
-    'register': '/register',
+    'dashboard': '/dashboard',
+    'auth': '/',
   }
 
   const handleNavigation = (pathKey: keyof RoutePathsType) => {
@@ -18,8 +19,8 @@ function App() {
 
   return (
     <Routes>
-      <Route path='/' element={<Dashboard/>}/>
-      <Route path='/register' element={<Register handleNavigation={handleNavigation}/>}/>
+      <Route path='/' element={<Auth isLogin={isLogin} setIsLogin={setIsLogin}  handleNavigation={handleNavigation}/>}/>
+      <Route path='/dashboard' element={<Dashboard/>}/>
     </Routes>
   )
 }

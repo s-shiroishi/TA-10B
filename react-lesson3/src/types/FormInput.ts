@@ -1,5 +1,5 @@
 export type FormInputsType = {
-    username: string;
+    username?: string;
     email: string;
     password: string;
   }

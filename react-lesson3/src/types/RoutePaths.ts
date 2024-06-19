@@ -1,4 +1,4 @@
 export type RoutePathsType = {
-    'dashboard': '/',
-    'register': '/register',
+    'dashboard': string;
+    'auth': string;
   }
