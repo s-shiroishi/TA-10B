@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
-import Header from '../bases/Header'
-import Main from '../bases/Main';
-import Footer from '../bases/Footer'
+import Header from '../organisms/Header'
+import Main from '../organisms/Main';
+import Footer from '../organisms/Footer'
 
 type LayoutProps = {
     children: ReactNode;

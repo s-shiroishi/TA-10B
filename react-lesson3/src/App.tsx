@@ -1,16 +1,23 @@
+import { useState, useEffect } from 'react';
 import {Routes, Route, useNavigate } from 'react-router-dom';
-import Auth from './components/pages/Auth';
+import Login from './components/pages/Login';
+import Register from './components/pages/Register';
 import Dashboard from './components/pages/Dashboard';
 import {RoutePathsType} from './types/RoutePaths';
-import { useState } from 'react';
 
 function App() {
-  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isLogin, setIsLogin] = useState<boolean>(!!localStorage.getItem('isLogin'));
+
+  useEffect(() => {
+    setIsLogin(!!localStorage.getItem('isLogin'));
+  }, []);
+
   const navigate = useNavigate();
 
   const routePaths: RoutePathsType = {
+    'login': '/',
+    'register': '/register',
     'dashboard': '/dashboard',
-    'auth': '/',
   }
 
   const handleNavigation = (pathKey: keyof RoutePathsType) => {
@@ -19,7 +26,8 @@ function App() {
 
   return (
     <Routes>
-      <Route path='/' element={<Auth isLogin={isLogin} setIsLogin={setIsLogin}  handleNavigation={handleNavigation}/>}/>
+      <Route path='/' element={<Login setIsLogin={setIsLogin}  handleNavigation={handleNavigation}/>}/>
+      <Route path='/register' element={<Register setIsLogin={setIsLogin}  handleNavigation={handleNavigation}/>}/>
       <Route path='/dashboard' element={<Dashboard/>}/>
     </Routes>
   )
