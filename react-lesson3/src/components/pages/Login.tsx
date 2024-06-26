@@ -6,15 +6,14 @@ import {auth
 import Layout from '../layout/Layout'
 import LoginFormInput from '../organisms/LoginFormInput'
 import Form from '../organisms/Form';
-import {RoutePathsType} from '../../types/RoutePaths';
-import {LoginFormType} from '../../types/Login';
+import {RoutePathsType} from '../../types/routePaths';
+import {LoginFormType} from '../../types/login';
 
 type LoginProps = {
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
   handleNavigation: (pathKey: keyof RoutePathsType) => void;
 }
 
-const Login: React.FC<LoginProps> = ({setIsLogin, handleNavigation}) => {
+const Login: React.FC<LoginProps> = ({handleNavigation}) => {
 
   const {
     register,
@@ -26,8 +25,6 @@ const Login: React.FC<LoginProps> = ({setIsLogin, handleNavigation}) => {
     await signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         console.log(userCredential);
-        localStorage.setItem('isLogin', 'true');
-        setIsLogin(true);
         handleNavigation('dashboard');
       })
       .catch((error) => {

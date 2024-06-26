@@ -1,15 +1,26 @@
 import { useState, useEffect } from 'react';
 import {Routes, Route, useNavigate } from 'react-router-dom';
+import { auth } from "./firebase"
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
 import Dashboard from './components/pages/Dashboard';
-import {RoutePathsType} from './types/RoutePaths';
+import {RoutePathsType} from './types/routePaths'
+import { UserType } from "./types/user"
 
 function App() {
-  const [isLogin, setIsLogin] = useState<boolean>(!!localStorage.getItem('isLogin'));
+  const [user, setUser] = useState<UserType | null>(null);
+  console.log(user);
 
   useEffect(() => {
-    setIsLogin(!!localStorage.getItem('isLogin'));
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        console.log("ユーザーがログインしていません");
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const navigate = useNavigate();
@@ -26,8 +37,8 @@ function App() {
 
   return (
     <Routes>
-      <Route path='/' element={<Login setIsLogin={setIsLogin}  handleNavigation={handleNavigation}/>}/>
-      <Route path='/register' element={<Register setIsLogin={setIsLogin}  handleNavigation={handleNavigation}/>}/>
+      <Route path='/' element={<Login handleNavigation={handleNavigation}/>}/>
+      <Route path='/register' element={<Register handleNavigation={handleNavigation}/>}/>
       <Route path='/dashboard' element={<Dashboard/>}/>
     </Routes>
   )

@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
-import {RegisterFormType} from '../../types/Register';
+import {RegisterFormType} from '../../types/register';
 
 type FormInputProps = {
     type: string;

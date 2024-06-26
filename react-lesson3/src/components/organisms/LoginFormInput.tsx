@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
-import {LoginFormType} from '../../types/Login';
+import {LoginFormType} from '../../types/login';
 
 type FormInputProps = {
     type: string;

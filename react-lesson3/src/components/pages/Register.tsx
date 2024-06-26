@@ -6,15 +6,14 @@ import {auth
 import Layout from '../layout/Layout'
 import RegisterFormInput from '../organisms/RegisterFormInput'
 import Form from '../organisms/Form';
-import {RoutePathsType} from '../../types/RoutePaths';
-import {RegisterFormType} from '../../types/Register';
+import {RoutePathsType} from '../../types/routePaths';
+import {RegisterFormType} from '../../types/register';
 
 type RegisterProps = {
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
   handleNavigation: (pathKey: keyof RoutePathsType) => void;
 }
 
-const Login: React.FC<RegisterProps> = ({setIsLogin, handleNavigation}) => {
+const Login: React.FC<RegisterProps> = ({ handleNavigation}) => {
 
   const {
     register,
@@ -26,8 +25,6 @@ const Login: React.FC<RegisterProps> = ({setIsLogin, handleNavigation}) => {
     await createUserWithEmailAndPassword(auth, data.email, data.password)
     .then((userCredential) =>{
       console.log(userCredential);
-      localStorage.setItem('isLogin', 'true');
-      setIsLogin(true);
       handleNavigation('dashboard');
     }).catch((error) => {
       if(error.code === 'auth/email-already-in-use'){
