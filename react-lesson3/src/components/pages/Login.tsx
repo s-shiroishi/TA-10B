@@ -1,8 +1,7 @@
 import React from 'react'
 import {useForm, SubmitHandler} from 'react-hook-form'
 import { signInWithEmailAndPassword } from "firebase/auth";
-import {auth
-} from '../../firebase'
+import {auth} from '../../firebase'
 import Layout from '../layout/Layout'
 import LoginFormInput from '../organisms/LoginFormInput'
 import Form from '../organisms/Form';

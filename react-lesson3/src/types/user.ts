@@ -1,3 +1,1 @@
-import { User } from "firebase/auth";
-
-export type UserType = User | null;
+export type UserType = {id: string; name: string; wallet: number} | null;
