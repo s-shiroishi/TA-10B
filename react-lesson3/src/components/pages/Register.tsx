@@ -1,19 +1,19 @@
 import React from 'react'
 import {useForm, SubmitHandler} from 'react-hook-form'
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import {auth
-} from '../../firebase'
+import {auth, db} from '../../firebase'
 import Layout from '../layout/Layout'
 import RegisterFormInput from '../organisms/RegisterFormInput'
 import Form from '../organisms/Form';
 import {RoutePathsType} from '../../types/routePaths';
 import {RegisterFormType} from '../../types/register';
+import { addDoc, collection } from 'firebase/firestore';
 
 type RegisterProps = {
   handleNavigation: (pathKey: keyof RoutePathsType) => void;
 }
 
-const Login: React.FC<RegisterProps> = ({ handleNavigation}) => {
+const Register: React.FC<RegisterProps> = ({ handleNavigation}) => {
 
   const {
     register,
@@ -21,10 +21,23 @@ const Login: React.FC<RegisterProps> = ({ handleNavigation}) => {
     formState: {errors},
   } = useForm<RegisterFormType>();
 
+  const getRandomInt = (min: number, max: number) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  const saveUserInfo = async (id: string, name: string) => {
+    await addDoc(collection(db, 'users'), {
+      id,
+      name,
+      wallet: getRandomInt(100, 1000),
+    });
+  };
+
   const registerHandler = async (data: RegisterFormType) => {
     await createUserWithEmailAndPassword(auth, data.email, data.password)
     .then((userCredential) =>{
-      console.log(userCredential);
+      const userId = userCredential.user.uid;
+      saveUserInfo(userId, data.username);
       handleNavigation('dashboard');
     }).catch((error) => {
       if(error.code === 'auth/email-already-in-use'){
@@ -51,4 +64,4 @@ const Login: React.FC<RegisterProps> = ({ handleNavigation}) => {
   )
 }
 
-export default Login
+export default Register
