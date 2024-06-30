@@ -1,5 +1,5 @@
 import React from 'react'
-import {useForm, SubmitHandler} from 'react-hook-form'
+import {useForm} from 'react-hook-form'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import {auth, db} from '../../firebase'
 import Layout from '../layout/Layout'
@@ -10,10 +10,11 @@ import {RegisterFormType} from '../../types/register';
 import { addDoc, collection } from 'firebase/firestore';
 
 type RegisterProps = {
+  getUserInfo: (id: string) => void;
   handleNavigation: (pathKey: keyof RoutePathsType) => void;
 }
 
-const Register: React.FC<RegisterProps> = ({ handleNavigation}) => {
+const Register: React.FC<RegisterProps> = ({getUserInfo, handleNavigation}) => {
 
   const {
     register,
@@ -35,27 +36,24 @@ const Register: React.FC<RegisterProps> = ({ handleNavigation}) => {
 
   const registerHandler = async (data: RegisterFormType) => {
     await createUserWithEmailAndPassword(auth, data.email, data.password)
-    .then((userCredential) =>{
-      const userId = userCredential.user.uid;
-      saveUserInfo(userId, data.username);
-      handleNavigation('dashboard');
-    }).catch((error) => {
-      if(error.code === 'auth/email-already-in-use'){
-        alert('このメールアドレスは既に使用されています。');
-      }else{
-        alert(error.message);
-        console.error(error);
-      }
-    });
-  };
-
-  const onSubmit: SubmitHandler<RegisterFormType> =  (data) => {
-    registerHandler(data);
-  };
+      .then((userCredential) =>{
+        const userId = userCredential.user.uid;
+        saveUserInfo(userId, data.username);
+        getUserInfo(userId);
+      })
+      .catch((error) => {
+        if(error.code === 'auth/email-already-in-use'){
+          alert('このメールアドレスは既に使用されています。');
+        }else{
+          alert(error.message);
+          console.error(error);
+        }
+      });
+    };
 
   return (
     <Layout>
-        <Form title='新規登録' submitText='新規登録' toggleText='ログインはこちらから' onSubmit={handleSubmit(onSubmit)} onClick={() => handleNavigation('login')}>
+        <Form title='新規登録' submitText='新規登録' toggleText='ログインはこちらから' onSubmit={handleSubmit(registerHandler)} onClick={() => handleNavigation('login')}>
             <RegisterFormInput type={'text'} name={'username'} placeholder={'userName'} register={register} errors={errors}>ユーザー名：</RegisterFormInput>
             <RegisterFormInput type={'text'} name={'email'} placeholder={'E-mail'} register={register} errors={errors}>メールアドレス：</RegisterFormInput>
             <RegisterFormInput type={'password'} name={'password'} placeholder={'Password'} register={register} errors={errors}>パスワード：</RegisterFormInput>
