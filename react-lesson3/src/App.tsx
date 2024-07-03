@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { db } from "./firebase"
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
 import Dashboard from './components/pages/Dashboard';
@@ -21,36 +21,9 @@ function App() {
   };
 
   const [user, setUser] = useState<UserType>(initUserData);
+  const [otherUsers, setOtherUsers] = useState<UserType[]>([]);
   
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if(user){
-      navigate('/dashboard');
-    }
-    else{
-      navigate('/');
-    }
-  },[user])
-
-  const getUserInfo =  async (id: string) => {
-    try {
-      const q = query(collection(db, 'users'), where('id', '==', id));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        const userData = {
-          id,
-          name: doc.data().name,
-          wallet: doc.data().wallet,
-        }
-        localStorage.setItem('user', JSON.stringify(userData));
-        setUser(userData);
-      });
-    } catch (error) {
-      console.error("ユーザー情報の取得に失敗しました", error);
-    }
-  };
-
   const routePaths: RoutePathsType = {
     'login': '/',
     'register': '/register',
@@ -61,11 +34,61 @@ function App() {
     navigate(routePaths[pathKey]);
   };
 
+  useEffect(() => {
+    if(user){
+      getOtherUserInfo();
+      navigate('/dashboard');
+    }
+    else{
+      navigate('/');
+    }
+  },[user])
+
+  const getUserInfo = (id: string) => {
+    try {
+      const q = query(collection(db, 'users'), where('id', '==', id));
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const userDoc = snapshot.docs[0].data();
+        const userData = {
+          id: userDoc.id,
+          name: userDoc.name,
+          wallet: userDoc.wallet,
+        };
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData);
+      });
+      return () => unsubscribe();
+    } 
+    catch (error) {
+      console.error("ユーザー情報の取得に失敗しました", error);
+    }
+  };
+
+  const getOtherUserInfo =  async () => {
+    try {
+      const q = query(collection(db, 'users'));
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const otherUserDocs = snapshot.docs.filter((doc) => doc.data().id !== user?.id);
+        const otherUserData = otherUserDocs.map((doc) => ({
+          id: doc.data().id,
+          name: doc.data().name,
+          wallet: doc.data().wallet,
+        }));
+        setOtherUsers(otherUserData);
+      });
+      return () => unsubscribe();
+    } 
+    catch (error) {
+      console.error("ユーザー情報の取得に失敗しました", error);
+    }
+  };
+
+
   return (
     <Routes>
       <Route path='/' element={<Login getUserInfo={getUserInfo} handleNavigation={handleNavigation}/>}/>
       <Route path='/register' element={<Register getUserInfo={getUserInfo}  handleNavigation={handleNavigation}/>}/>
-      <Route path='/dashboard' element={user ? <Dashboard user={user} setUser={setUser}/> : <Navigate replace to='/'/> }/>
+      <Route path='/dashboard' element={user ? <Dashboard user={user} setUser={setUser} otherUsers={otherUsers}/> : <Navigate replace to='/'/> }/>
     </Routes>
   )
 }
