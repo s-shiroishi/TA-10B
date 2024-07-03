@@ -1,5 +1,5 @@
 import React from 'react'
-import {useForm, SubmitHandler} from 'react-hook-form'
+import {useForm} from 'react-hook-form'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import {auth} from '../../firebase'
 import Layout from '../layout/Layout'
@@ -9,10 +9,11 @@ import {RoutePathsType} from '../../types/routePaths';
 import {LoginFormType} from '../../types/login';
 
 type LoginProps = {
+  getUserInfo: (id: string) => void;
   handleNavigation: (pathKey: keyof RoutePathsType) => void;
 }
 
-const Login: React.FC<LoginProps> = ({handleNavigation}) => {
+const Login: React.FC<LoginProps> = ({getUserInfo, handleNavigation}) => {
 
   const {
     register,
@@ -23,8 +24,7 @@ const Login: React.FC<LoginProps> = ({handleNavigation}) => {
   const loginHandler = async (data: LoginFormType) => {
     await signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
-        console.log(userCredential);
-        handleNavigation('dashboard');
+        getUserInfo(userCredential.user.uid);
       })
       .catch((error) => {
         if(error.code === 'auth/invalid-credential'){
@@ -32,17 +32,13 @@ const Login: React.FC<LoginProps> = ({handleNavigation}) => {
         }else{
           alert(error.message);
           console.error(error);
-        }
-      });
-  }
-
-  const onSubmit: SubmitHandler<LoginFormType> =  (data) => {
-    loginHandler(data);
-  };
+        };
+      })
+    };
 
   return (
     <Layout>
-        <Form title='ログイン' submitText='ログイン' toggleText='新規登録はこちらから' onSubmit={handleSubmit(onSubmit)} onClick={() => handleNavigation('register')}>
+        <Form title='ログイン' submitText='ログイン' toggleText='新規登録はこちらから' onSubmit={handleSubmit(loginHandler)} onClick={() => handleNavigation('register')}>
             <LoginFormInput type={'text'} name={'email'} placeholder={'E-mail'} register={register} errors={errors}>メールアドレス：</LoginFormInput>
             <LoginFormInput type={'password'} name={'password'} placeholder={'Password'} register={register} errors={errors}>パスワード：</LoginFormInput>
         </Form>
