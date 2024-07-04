@@ -13,7 +13,7 @@ type FormInputProps = {
 
 const RegisterFormInput: React.FC<FormInputProps> = ({type, name, placeholder, register, errors, children}) => {
   const validationRules = {
-    username: { required: 'ユーザー名は必須です。', minLength: {value: 4, message: '4文字以上入力してください。'} } ,
+    username: { required: 'ユーザー名は必須です。', minLength: {value: 2, message: '2文字以上入力してください。'} } ,
     email: { required: 'メールアドレスは必須です。' , pattern: { value: /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/, message: '不適切なメールアドレスです。'} },
     password: { required: 'パスワードは必須です。', minLength: {value: 6, message: '6文字以上入力してください。'} } 
   };
