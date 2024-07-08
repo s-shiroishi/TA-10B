@@ -3,7 +3,8 @@ import { signOut } from "firebase/auth";
 import {auth} from '../../firebase'
 import Layout from '../layout/Layout'
 import Button from '../bases/Button'
-import WalletPopup from '../organisms/WalletPopup';
+import WalletBalancePopup from '../organisms/WalletBalancePopup';
+import SendWalletPopup from '../organisms/SendWalletPopup';
 import { UserType } from "../../types/user"
 
 type DashboardProps = {
@@ -13,7 +14,8 @@ type DashboardProps = {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({user, setUser, otherUsers}) => {
-  const [isWalletOpen, setIsWalletOpen] = useState<boolean>(false);
+  const [isWalletBalanceOpen, setIsWalletBalanceOpen] = useState<boolean>(false);
+  const [isSendWalletOpen, setIsSendWalletOpen] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<UserType>(null);
 
   const logout = () => {
@@ -28,8 +30,13 @@ const Dashboard: React.FC<DashboardProps> = ({user, setUser, otherUsers}) => {
       });
   };
 
-  const handleWallet = (user: UserType) => {
-    setIsWalletOpen(!isWalletOpen);
+  const handleWalletBalance = (user: UserType) => {
+    setIsWalletBalanceOpen(!isWalletBalanceOpen);
+    setSelectedUser(user);
+  };
+
+  const handleSendWallet = (user: UserType) => {
+    setIsSendWalletOpen(!isSendWalletOpen);
     setSelectedUser(user);
   };
 
@@ -50,8 +57,8 @@ const Dashboard: React.FC<DashboardProps> = ({user, setUser, otherUsers}) => {
                   <li key={otherUser?.id} className='mb-2 pb-1 flex justify-between border-b border-slate-300 shadow-md'>
                     <h3 className='text-lg'>{otherUser?.name}</h3>
                     <div>
-                      <Button type={'button'} onClick={() => handleWallet(otherUser)} cls={'mr-2 bg-sky-500 text-white text-sm hover:opacity-80'}>walletを見る</Button>
-                      <Button type={'button'} cls={'bg-sky-500 text-white text-sm hover:opacity-80'}>送る</Button>
+                      <Button type={'button'} onClick={() => handleWalletBalance(otherUser)} cls={'mr-2 bg-sky-500 text-white text-sm hover:opacity-80'}>walletを見る</Button>
+                      <Button type={'button'} onClick={() => handleSendWallet(otherUser)} cls={'bg-sky-500 text-white text-sm hover:opacity-80'}>送る</Button>
                     </div>
                   </li>
                 ))}
@@ -60,7 +67,8 @@ const Dashboard: React.FC<DashboardProps> = ({user, setUser, otherUsers}) => {
           </section> 
         </div>
       </Layout>
-      {isWalletOpen && <WalletPopup user={selectedUser} onClick={() => handleWallet(null)}/>}
+      {isWalletBalanceOpen && <WalletBalancePopup user={selectedUser} onClick={() => handleWalletBalance(null)}/>}
+      {isSendWalletOpen && <SendWalletPopup sender={user} recipient={selectedUser} handleSendWallet={handleSendWallet}/>}
     </>
   )
 }

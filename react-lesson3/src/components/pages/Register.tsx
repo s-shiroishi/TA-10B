@@ -8,13 +8,14 @@ import Form from '../organisms/Form';
 import {RoutePathsType} from '../../types/routePaths';
 import {RegisterFormType} from '../../types/register';
 import { addDoc, collection } from 'firebase/firestore';
+import { UserType } from '../../types/user';
 
 type RegisterProps = {
-  getUserInfo: (id: string) => void;
+  setUser: React.Dispatch<React.SetStateAction<UserType>>;
   handleNavigation: (pathKey: keyof RoutePathsType) => void;
 }
 
-const Register: React.FC<RegisterProps> = ({getUserInfo, handleNavigation}) => {
+const Register: React.FC<RegisterProps> = ({setUser, handleNavigation}) => {
 
   const {
     register,
@@ -26,30 +27,26 @@ const Register: React.FC<RegisterProps> = ({getUserInfo, handleNavigation}) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  const saveUserInfo = async (id: string, name: string) => {
-    await addDoc(collection(db, 'users'), {
-      id,
-      name,
-      wallet: getRandomInt(100, 1000),
-    });
-  };
-
   const registerHandler = async (data: RegisterFormType) => {
-    await createUserWithEmailAndPassword(auth, data.email, data.password)
-      .then((userCredential) =>{
-        const userId = userCredential.user.uid;
-        saveUserInfo(userId, data.username);
-        getUserInfo(userId);
-      })
-      .catch((error) => {
-        if(error.code === 'auth/email-already-in-use'){
-          alert('このメールアドレスは既に使用されています。');
-        }else{
-          alert(error.message);
-          console.error(error);
-        }
-      });
-    };
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      const loginUser = {
+        id: userCredential.user.uid,
+        name: data.username,
+        wallet: getRandomInt(100, 1000),
+      };
+      await addDoc(collection(db, 'users'), loginUser);
+      setUser(loginUser);
+    } 
+    catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        alert('このメールアドレスは既に使用されています。');
+      } else {
+        alert(error.message);
+        console.error(error);
+      }
+    }
+  };
 
   return (
     <Layout>
